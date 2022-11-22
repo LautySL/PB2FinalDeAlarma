@@ -25,4 +25,5 @@ public class Usuario {
 	public void setNombre(String nombre) {
 		Nombre = nombre;
 	}
+	
 }

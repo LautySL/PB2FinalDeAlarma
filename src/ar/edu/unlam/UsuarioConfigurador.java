@@ -8,22 +8,33 @@ public class UsuarioConfigurador extends Usuario implements Configurable {
 		super(dNI, nombre);
 	}
 	
-	public void agregarUsuarioAlaListaDeUsuariosValidosDeUnaAlarma(int idUsuario, int idAlarma, String codigoConfiguracionAlarma) throws CodigoAlarmaIncorrectoException {
-		Usuario usuarioAAgregar = new Usuario (idUsuario, null);
-		Alarma alarma = new Alarma (idAlarma, null, codigoConfiguracionAlarma, null);
+	public boolean agregarUsuarioAlaListaDeUsuariosValidosDeUnaAlarma(int idUsuario, int idAlarma, String codigoConfiguracionAlarma, Central central) throws CodigoAlarmaIncorrectoException {
+		Alarma alarmaALaQueLeAgregoElUsuarioASuLista = central.getAlarma(idAlarma);
+		Usuario usuarioAlQueAgregoALaAlarma = central.getUsuario(idUsuario);
 		
-		if (alarma.getIDalarma() == idAlarma && alarma.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
-			alarma.getUsuariosValidosParaOperar().add(usuarioAAgregar);
-		} else if (alarma.getIDalarma() == idAlarma && alarma.getCodigoDeConfiguracion() != codigoConfiguracionAlarma) {
+		if (alarmaALaQueLeAgregoElUsuarioASuLista.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
+			alarmaALaQueLeAgregoElUsuarioASuLista.agregarUsuarioValidoParaOperar(usuarioAlQueAgregoALaAlarma);
+			return true;
+		} else if (alarmaALaQueLeAgregoElUsuarioASuLista.getCodigoDeConfiguracion() != codigoConfiguracionAlarma) {
 			throw new CodigoAlarmaIncorrectoException();
-		}
+		} return false;
 	}
 
-	public void agregarSensorAUnaAlarma (int idAlarma, String codigoConfiguracionAlarma, Sensor sensor) throws SensorDuplicadoException {
+	public void agregarSensorAUnaAlarma (int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, Central central) throws SensorDuplicadoException {
+		Alarma alarmaALaQueLeAgregoElSensor = central.getAlarma(idAlarma);
 		
+		if (alarmaALaQueLeAgregoElSensor.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
+			alarmaALaQueLeAgregoElSensor.agregarSensor(sensor);
+		} else if (alarmaALaQueLeAgregoElSensor.buscarSensorPorID(idAlarma) != null){
+			throw new SensorDuplicadoException();
+		}
 	}
 	
-	public boolean activarUnSensorDeUnaAlarma (int idSensor, int idAlarma, String codigoConfiguracionAlarma) {
-		
+	public void activarUnSensorDeUnaAlarma (int idSensor, int idAlarma, String codigoConfiguracionAlarma, Central central) {
+		Alarma alarmaALaQueLeActivoUnSensor = central.getAlarma(idAlarma);
+		Sensor sensorDeLaAlarma = alarmaALaQueLeActivoUnSensor.buscarSensorPorID(idSensor);
+		if (sensorDeLaAlarma.getEstaActivado() == false) {
+			sensorDeLaAlarma.setEstaActivado(true);
+		}
 	}
 }

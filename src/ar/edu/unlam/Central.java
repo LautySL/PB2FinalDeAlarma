@@ -52,10 +52,20 @@ public class Central {
 		} return false;
 	}
 	
-	public void agregarUsuarioAUnaAlarma (int dniUsuarioAAgregar, int idAlarma, String codigoConfiguracionAlarma) {
-		Usuario usuario = new Usuario (dniUsuarioAAgregar, null);
-		Alarma alarma = new Alarma (idAlarma, null, codigoConfiguracionAlarma, null);
-		alarma.getUsuariosValidosParaOperar().add(usuario);
+	public Alarma getAlarma (int idAlarma) {
+		for (Alarma alarma : alarmas) {
+			if (alarma.getIDalarma() == idAlarma) {
+				return alarma;
+			}
+		} return null;
+	}
+	
+	public Usuario getUsuario (int DniUsuario) {
+		for (Usuario usuario : usuarios) {
+			if (usuario.getDNI() == DniUsuario) {
+				return usuario;
+			}
+		} return null;
 	}
 	
 	public boolean agregarSensorAAlarma(int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, int idUsuarioConfigurador) {
@@ -63,7 +73,7 @@ public class Central {
 		for (Alarma alarma : alarmas) {
 			if (alarma.getIDalarma().equals(idAlarma)) {
 				if (alarma.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
-					alarma.getListaDeSensores().add(sensor);
+					alarma.agregarSensor(sensor);
 					return true;
 				}
 			}

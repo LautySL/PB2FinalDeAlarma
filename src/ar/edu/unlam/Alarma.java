@@ -94,6 +94,23 @@ public class Alarma {
 			}
 		} return true;
 	}
+	
+	public Integer getCantidadDeSensoresDesactivados() {
+		Integer contadorDeSensoresDesactivados = 0;
+		for (Sensor sensor : listaDeSensores) {
+			if (sensor.getEstaActivado() == false) {
+				contadorDeSensoresDesactivados++;
+			}
+		} return contadorDeSensoresDesactivados;
+	}
+	
+	public void agregarSensor (Sensor sensor) {
+		listaDeSensores.add(sensor);
+	}
+	
+	public void agregarUsuarioValidoParaOperar (Usuario usuario) {
+		usuariosValidosParaOperar.add(usuario);
+	}
 
 	public Boolean getEstaActivada() {
 		return estaActivada;
