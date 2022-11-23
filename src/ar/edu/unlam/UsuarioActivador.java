@@ -11,6 +11,12 @@ public class UsuarioActivador extends Usuario implements Activable {
 	}
 	
 	public boolean activarDesactivarAlarma (Alarma alarma, String codigoActivacionAlarma, Central central) {
-	}
-
+		Alarma alarmaAModificar = central.getAlarma(alarma.getIDalarma());
+		if (alarmaAModificar.verificarSiTodosLosSensoresDeUnaAlarmaEstanActivados() && alarmaAModificar.getEstaActivada() == false) {
+			alarmaAModificar.setEstaActivada(true);
+			return true;
+		} else if (alarmaAModificar.getEstaActivada() == true) {
+			alarmaAModificar.setEstaActivada(false);
+		} return false;
+	} 
 }

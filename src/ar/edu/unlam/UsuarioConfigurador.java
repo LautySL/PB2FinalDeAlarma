@@ -8,7 +8,7 @@ public class UsuarioConfigurador extends Usuario implements Configurable {
 		super(dNI, nombre);
 	}
 	
-	public boolean agregarUsuarioAlaListaDeUsuariosValidosDeUnaAlarma(int idUsuario, int idAlarma, String codigoConfiguracionAlarma, Central central) throws CodigoAlarmaIncorrectoException {
+	public boolean agregarUsuarioAlaListaDeUsuariosValidosDeUnaAlarma(int idUsuario, Integer idAlarma, String codigoConfiguracionAlarma, Central central) throws CodigoAlarmaIncorrectoException {
 		Alarma alarmaALaQueLeAgregoElUsuarioASuLista = central.getAlarma(idAlarma);
 		Usuario usuarioAlQueAgregoALaAlarma = central.getUsuario(idUsuario);
 		
@@ -19,13 +19,15 @@ public class UsuarioConfigurador extends Usuario implements Configurable {
 			throw new CodigoAlarmaIncorrectoException();
 		} return false;
 	}
+	
+	
 
 	public void agregarSensorAUnaAlarma (int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, Central central) throws SensorDuplicadoException {
 		Alarma alarmaALaQueLeAgregoElSensor = central.getAlarma(idAlarma);
 		
 		if (alarmaALaQueLeAgregoElSensor.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
 			alarmaALaQueLeAgregoElSensor.agregarSensor(sensor);
-		} else if (alarmaALaQueLeAgregoElSensor.buscarSensorPorID(idAlarma) != null){
+		} else if (alarmaALaQueLeAgregoElSensor.verificarSiSensorYaEstaRegistrado(sensor) == true){
 			throw new SensorDuplicadoException();
 		}
 	}

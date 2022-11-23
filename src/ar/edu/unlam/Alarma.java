@@ -1,6 +1,10 @@
 package ar.edu.unlam;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Alarma {
@@ -79,6 +83,15 @@ public class Alarma {
 		this.listaDeSensores = listaDeSensores;
 	}
 	
+	public Boolean verificarSiSensorYaEstaRegistrado(Sensor sensor) {
+		boolean yaEstaRegistrado = false;
+		for (Sensor Sensor : listaDeSensores) {
+			if (Sensor.getIdentificadorNumerico() == sensor.getIdentificadorNumerico()) {
+				yaEstaRegistrado = true;
+			}
+		} return yaEstaRegistrado;
+	}
+	
 	public Sensor buscarSensorPorID (int idSensor) {
 		for (Sensor Sensor : listaDeSensores) {
 			if (Sensor.getIdentificadorNumerico() == idSensor) {
@@ -119,4 +132,17 @@ public class Alarma {
 	public void setEstaActivada(Boolean estaActivada) {
 		this.estaActivada = estaActivada;
 	} 
+	
+	public Boolean agregarAccion (Integer identificadorDeLaAccion, Alarma alarmaSobreLaQueOpera, Usuario usuarioQueRealizaLaAccion, LocalDate fecha, TipoDeOperacion tipoDeOperacion) {
+		Accion accionAAgregar = new Accion (identificadorDeLaAccion, alarmaSobreLaQueOpera, usuarioQueRealizaLaAccion, fecha, tipoDeOperacion);
+		if (accionesRealizadas.add(accionAAgregar)) {
+			return true;
+		} return false;
+	} 
+	
+	public Set <Accion> getAccionesOrdenadasPorId() {
+		Set <Accion> accionesOrdenadasPorId = new TreeSet<>();
+		accionesOrdenadasPorId . addAll (this.accionesRealizadas);
+		return accionesOrdenadasPorId;
+	}
 }

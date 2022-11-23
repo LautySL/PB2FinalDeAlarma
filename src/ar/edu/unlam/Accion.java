@@ -1,19 +1,29 @@
 package ar.edu.unlam;
 
+import java.time.LocalDate;
+
 public class Accion {
 	
 	private Integer identificadorDeLaAccion;
 	private Alarma alarmaSobreLaQueOpera;
 	private Usuario usuarioQueRealizaLaAccion;
+	private LocalDate fecha;
 	private TipoDeOperacion tipoDeOperacion;
 
-	public Accion(Integer identificadorDeLaAccion, Alarma alarmaSobreLaQueOpera, Usuario usuarioQueRealizaLaAccion, TipoDeOperacion tipoDeOperacion) {
+	public Accion(Integer identificadorDeLaAccion, Alarma alarmaSobreLaQueOpera, Usuario usuarioQueRealizaLaAccion, LocalDate fecha, TipoDeOperacion tipoDeOperacion) {
 		this.identificadorDeLaAccion = identificadorDeLaAccion;
 		this.alarmaSobreLaQueOpera = alarmaSobreLaQueOpera;
+		this.fecha = fecha;
 		this.usuarioQueRealizaLaAccion = usuarioQueRealizaLaAccion;
 		this.tipoDeOperacion = tipoDeOperacion;
 	}
 	
+	public LocalDate getFecha() {
+		return fecha;
+	}
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
 	public Integer getIdentificadorDeLaAccion() {
 		return identificadorDeLaAccion;
 	}

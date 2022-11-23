@@ -9,9 +9,8 @@ public class Central {
 	private List <Usuario> usuarios;
 	private List <Alarma> alarmas;
 	
-	public Central(Integer nombre, List<Usuario> usuarios, List<Alarma> alarmas) {
+	public Central() {
 		super();
-		this.nombre = nombre;
 		this.usuarios = new ArrayList <Usuario>();
 		this.alarmas = new ArrayList <Alarma>();
 	}
