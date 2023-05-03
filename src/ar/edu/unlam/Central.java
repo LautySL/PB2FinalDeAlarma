@@ -67,13 +67,26 @@ public class Central {
 		} return null;
 	}
 	
-	public boolean agregarSensorAAlarma(int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, int idUsuarioConfigurador) {
-		Usuario usuario = new UsuarioConfigurador (idUsuarioConfigurador, null);
+	public boolean agregarSensorAAlarma(int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, int idUsuarioConfigurador) throws SensorDuplicadoException {	
 		for (Alarma alarma : alarmas) {
 			if (alarma.getIDalarma().equals(idAlarma)) {
 				if (alarma.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
-					alarma.agregarSensor(sensor);
-					return true;
+					List <Sensor> listaDeSensoresDeLaAlarma = alarma.getListaDeSensores();
+					for (Sensor sensor2 : listaDeSensoresDeLaAlarma) {
+						if (sensor2.getIdentificadorNumerico() != sensor.getIdentificadorNumerico()) {
+							alarma.agregarSensor(sensor);
+							return true;
+						}
+					}
+				} else if (alarma.getIDalarma().equals(idAlarma)) {
+					if (alarma.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
+						List <Sensor> listaDeSensoresDeLaAlarma = alarma.getListaDeSensores();
+						for (Sensor sensor2 : listaDeSensoresDeLaAlarma) {
+							if (sensor2.getIdentificadorNumerico().equals(sensor.getIdentificadorNumerico())) {
+								throw new SensorDuplicadoException();
+							}
+						}
+					}
 				}
 			}
 		} return false;
@@ -94,7 +107,7 @@ public class Central {
 		} return false;
 	}
 	
-	public boolean activarDesactivarAlarma (int idAlarma, String codigoActivacionAlarma, Configurable usuarioConfigurador) {
+	public boolean activarODesactivarAlarma (int idAlarma, String codigoActivacionAlarma) {
 		Boolean alarmaActivada = true;
 		for (Alarma alarma : alarmas) {
 			if (alarma.getIDalarma() == idAlarma) {
@@ -110,4 +123,11 @@ public class Central {
 			}
 		} return alarmaActivada;
 	}
+
+	public boolean agregarUsuarioALaListaDeUsuariosValidosDeUnaAlarma(Integer dni, Integer iDalarma, String codigoDeConfiguracionDeLaAlarma) {
+		Boolean fueAgregadoElUsuario = false;
+		return false;
+	}
+	
+	
 }

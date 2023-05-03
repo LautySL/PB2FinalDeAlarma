@@ -14,7 +14,7 @@ public class UsuarioAdministrador extends Usuario {
 		return central.agregarUsuario(usuario);
 	}
 	
-	public boolean agregarSensorAAlarma (int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, int idUsuarioConfigurador, Central central) {
+	public boolean agregarSensorAAlarma (int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, int idUsuarioConfigurador, Central central) throws SensorDuplicadoException {
 		return central.agregarSensorAAlarma(idAlarma, codigoConfiguracionAlarma, sensor, idUsuarioConfigurador);
 	}
 	
@@ -22,8 +22,13 @@ public class UsuarioAdministrador extends Usuario {
 		return central.activarSensorDeAlarma(idSensor, idAlarma, codigoActivacionAlarma);
 	}
 	
-	public boolean activarDesactivarAlarma (int idAlarma, String codigoActivacionAlarma, Configurable usuario, Central central) {
-		return central.activarDesactivarAlarma(idAlarma, codigoActivacionAlarma, usuario);
+	public boolean activarODesactivarAlarma (int idAlarma, String codigoActivacionAlarma, Central central) {
+		return central.activarODesactivarAlarma(idAlarma, codigoActivacionAlarma);
+	}
+
+	public boolean agregarUnUsuarioALaListaDeUsuariosValidos (Central central, Integer dni, Integer iDalarma, String codigoDeConfiguracionDeLaAlarma) {
+		return central.agregarUsuarioALaListaDeUsuariosValidosDeUnaAlarma(dni, iDalarma, codigoDeConfiguracionDeLaAlarma);
+		
 	}
 
 }
