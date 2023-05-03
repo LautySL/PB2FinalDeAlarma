@@ -22,16 +22,19 @@ public class UsuarioConfigurador extends Usuario implements Configurable {
 	
 	
 
-	public boolean agregarSensorAUnaAlarma (int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, Central central) throws SensorDuplicadoException {
+	public boolean agregarSensorAUnaAlarma (int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, Central central) 
+			throws SensorDuplicadoException {
 		Alarma alarmaALaQueLeAgregoElSensor = central.getAlarma(idAlarma);
 		
 		if (alarmaALaQueLeAgregoElSensor.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
-			alarmaALaQueLeAgregoElSensor.agregarSensor(sensor);
-			return true;
-		} else if (alarmaALaQueLeAgregoElSensor.verificarSiSensorYaEstaRegistrado(sensor) == true){
-			throw new SensorDuplicadoException();
+			if (!alarmaALaQueLeAgregoElSensor.verificarSiSensorYaEstaRegistrado(sensor)) {
+				alarmaALaQueLeAgregoElSensor.agregarSensor(sensor);
+				return true;
+			} else {
+				throw new SensorDuplicadoException();
+			}
 		}
-		return false;
+			return false;
 	}
 	
 	public void activarUnSensorDeUnaAlarma (int idSensor, int idAlarma, String codigoConfiguracionAlarma, Central central) {

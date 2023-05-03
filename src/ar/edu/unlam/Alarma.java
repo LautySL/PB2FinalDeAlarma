@@ -6,6 +6,7 @@ import java.util.TreeSet;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Alarma {
 
@@ -140,9 +141,10 @@ public class Alarma {
 		} return false;
 	} 
 	
-	public Set <Accion> getAccionesOrdenadasPorId() {
-		Set <Accion> accionesOrdenadasPorId = new TreeSet<>();
-		accionesOrdenadasPorId . addAll (this.accionesRealizadas);
+	public ArrayList <Accion> getAccionesOrdenadasPorId() {
+		ArrayList <Accion> accionesOrdenadasPorId = new ArrayList<>();
+		accionesOrdenadasPorId.addAll(this.accionesRealizadas);
+		Collections.sort(accionesOrdenadasPorId);
 		return accionesOrdenadasPorId;
 	}
 }

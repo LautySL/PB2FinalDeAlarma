@@ -40,9 +40,7 @@ public class Central {
 	}
 	
 	public Boolean agregarAlarma (Alarma alarma) {
-		if (this.alarmas.add(alarma)) {
-			return true;
-		} return false;
+		return this.alarmas.add(alarma);
 	}
 	
 	public Boolean agregarUsuario (Usuario usuario) {

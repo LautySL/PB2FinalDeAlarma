@@ -2,6 +2,8 @@ package ar.edu.unlam.test;
 
 import static org.junit.Assert.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 import ar.edu.unlam.*;
 
 import org.junit.Test;
@@ -103,15 +105,17 @@ public class Testometro {
 		administrador.agregarAlarma(alarma, central);
 		administrador.agregarUnUsuarioALaListaDeUsuariosValidos(central, administrador.getDNI(), alarma.getIDalarma(), alarma.getCodigoDeConfiguracion());
 		
-		alarma.agregarAccion(1, alarma, administrador, LocalDate.of(2022, 11, 9), TipoDeOperacion.CONFIGURACION);
-		alarma.agregarAccion(50, alarma, administrador, LocalDate.of(2022, 11, 9), TipoDeOperacion.CONFIGURACION);
-		alarma.agregarAccion(3000, alarma, administrador, LocalDate.of(2022, 11, 9), TipoDeOperacion.CONFIGURACION);
-		alarma.agregarAccion(8, alarma, administrador, LocalDate.of(2022, 11, 9), TipoDeOperacion.CONFIGURACION);
+		alarma.agregarAccion(1, alarma, administrador, LocalDate.of (2022, 11, 9), TipoDeOperacion.CONFIGURACION);
+		alarma.agregarAccion(50, alarma, administrador, LocalDate.of (2022, 11, 9), TipoDeOperacion.CONFIGURACION);
+		alarma.agregarAccion(3000, alarma, administrador, LocalDate.of (2022, 11, 9), TipoDeOperacion.CONFIGURACION);
+		alarma.agregarAccion(8, alarma, administrador, LocalDate.of (2022, 11, 9), TipoDeOperacion.CONFIGURACION);
+	
+		ArrayList <Accion> accionesOrdenadasPorID = alarma.getAccionesOrdenadasPorId();
 		
-
-		for (Accion accion : alarma.getAccionesOrdenadasPorId()) {
-			System.out.println(accion.toString());
-		}
+		assertEquals ( (Integer) 1, accionesOrdenadasPorID.get(0).getIdentificadorDeLaAccion());
+		assertEquals ( (Integer) 8, accionesOrdenadasPorID.get(1).getIdentificadorDeLaAccion());
+		assertEquals ( (Integer) 50, accionesOrdenadasPorID.get(2).getIdentificadorDeLaAccion());
+		assertEquals ( (Integer) 3000, accionesOrdenadasPorID.get(3).getIdentificadorDeLaAccion());
 	}
 
 }

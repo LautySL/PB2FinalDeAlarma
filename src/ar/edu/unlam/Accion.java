@@ -2,7 +2,7 @@ package ar.edu.unlam;
 
 import java.time.LocalDate;
 
-public class Accion {
+public class Accion implements Comparable <Accion>{
 	
 	private Integer identificadorDeLaAccion;
 	private Alarma alarmaSobreLaQueOpera;
@@ -47,6 +47,11 @@ public class Accion {
 	}
 	public void setTipoDeOperacion(TipoDeOperacion tipoDeOperacion) {
 		this.tipoDeOperacion = tipoDeOperacion;
+	}
+
+	@Override
+	public int compareTo(Accion o) {
+		return this.identificadorDeLaAccion - o.identificadorDeLaAccion;
 	}
 	
 	
