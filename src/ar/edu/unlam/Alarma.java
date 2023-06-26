@@ -1,8 +1,6 @@
 package ar.edu.unlam;
 
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -122,8 +120,8 @@ public class Alarma {
 		listaDeSensores.add(sensor);
 	}
 	
-	public void agregarUsuarioValidoParaOperar (Usuario usuario) {
-		usuariosValidosParaOperar.add(usuario);
+	public Boolean agregarUsuarioValidoParaOperar (Usuario usuario) {
+		return this.usuariosValidosParaOperar.add(usuario);
 	}
 
 	public Boolean getEstaActivada() {

@@ -72,38 +72,66 @@ public class Testometro {
 	}
 	
 	@Test
-	public void queNoSePuedaActivarUnaAlarmaSiHayAlMenosUnSensorDesactivado() throws CodigoAlarmaIncorrectoException, SensorDuplicadoException {
+	public void queNoSePuedaActivarUnaAlarmaSiHayAlMenosUnSensorDesactivado() throws Exception {
 		UsuarioAdministrador administrador = new UsuarioAdministrador(41026566, "Pancho Cerro");
 		Central central = new Central();
-		Alarma alarma = new Alarma(1, "2222", "3333", "ProteccionTotal2000");
+		Alarma alarma = new Alarma(123, "2222", "3333", "ProteccionTotal2000");
+		
 		central.agregarUsuario(administrador);
+		
 		administrador.agregarAlarma(alarma, central);
 
-		administrador.agregarUnUsuarioALaListaDeUsuariosValidos(central, administrador.getDNI(), alarma.getIDalarma(), alarma.getCodigoDeConfiguracion());
+		administrador.agregarUnUsuarioALaListaDeUsuariosValidos(central, administrador, alarma.getIDalarma(), alarma.getCodigoDeConfiguracion());
 
 		alarma.agregarAccion(1, alarma, administrador, LocalDate.of(2022, 11, 9), TipoDeOperacion.CONFIGURACION);
-		Sensor sensor = new Sensor(1, true);
-		administrador.agregarSensorAAlarma(1, "3333", sensor, administrador.getDNI(), central);
-		Sensor sensor1 = new Sensor(26, true);
-		administrador.agregarSensorAAlarma(1, "3233", sensor1, administrador.getDNI(), central);
+		Sensor sensor = new Sensor(12, true);
+		administrador.agregarSensorAAlarma(123, "3333", sensor, administrador.getDNI(), central);
+		Sensor sensor1 = new Sensor(122, false);
+		administrador.agregarSensorAAlarma(123, "3333", sensor1, administrador.getDNI(), central);
+		
+		administrador.activarAlarma(alarma.getIDalarma(), alarma.getCodigoDeActivacionDesactivacion(), central);
+		
+		Boolean alarmaEstadoEsperado = false;
+		Boolean alarmaEstado = alarma.getEstaActivada();
 
-		administrador.activarODesactivarAlarma(alarma.getIDalarma(), alarma.getCodigoDeActivacionDesactivacion(), central);
+		assertEquals(alarmaEstadoEsperado, alarmaEstado);
+	}
+	
+	@Test
+	public void queSePuedaActivarUnaAlarmaSiTodosSusSensoresEstanActivados() throws Exception {
+		UsuarioAdministrador administrador = new UsuarioAdministrador(41026566, "Pancho Cerro");
+		Central central = new Central();
+		Alarma alarma = new Alarma(123, "2222", "3333", "ProteccionTotal2000");
+		
+		central.agregarUsuario(administrador);
+		
+		administrador.agregarAlarma(alarma, central);
 
-		Boolean esperado = true;
-		Boolean obtenido = alarma.getEstaActivada();
+		administrador.agregarUnUsuarioALaListaDeUsuariosValidos(central, administrador, alarma.getIDalarma(), alarma.getCodigoDeConfiguracion());
 
-		assertEquals(esperado, obtenido);
+		alarma.agregarAccion(1, alarma, administrador, LocalDate.of(2022, 11, 9), TipoDeOperacion.CONFIGURACION);
+		Sensor sensor = new Sensor(12, true);
+		administrador.agregarSensorAAlarma(123, "3333", sensor, administrador.getDNI(), central);
+		Sensor sensor1 = new Sensor(122, true);
+		administrador.agregarSensorAAlarma(123, "3333", sensor1, administrador.getDNI(), central);
+		
+		administrador.activarAlarma(alarma.getIDalarma(), alarma.getCodigoDeActivacionDesactivacion(), central);
+		
+		Boolean alarmaEstadoEsperado = true;
+		Boolean alarmaEstado = alarma.getEstaActivada();
+
+		assertEquals(alarmaEstado, alarmaEstadoEsperado);
 	}
 
 	@Test
-	public void queParaUnaAlarmaDeterminadaSePuedaObtenerUnaColeccionOrdenadaDeAcccionesDeTipoConfiguracionOdenadasPorldDeAccion() throws CodigoAlarmaIncorrectoException {
+	public void queParaUnaAlarmaDeterminadaSePuedaObtenerUnaColeccionOrdenadaDeAcccionesDeTipoConfiguracionOdenadasPorldDeAccion() throws Exception {
 		UsuarioAdministrador administrador = new UsuarioAdministrador(41026566, "Pancho Cerro");
 		Central central = new Central();
 		Alarma alarma = new Alarma (1224, "Alarm", "CONFIG", "DEACTIVATE");
 		
 		central.agregarUsuario(administrador);
 		administrador.agregarAlarma(alarma, central);
-		administrador.agregarUnUsuarioALaListaDeUsuariosValidos(central, administrador.getDNI(), alarma.getIDalarma(), alarma.getCodigoDeConfiguracion());
+		administrador.agregarUnUsuarioALaListaDeUsuariosValidos(central, administrador, alarma.getIDalarma(), alarma.getCodigoDeConfiguracion());
 		
 		alarma.agregarAccion(1, alarma, administrador, LocalDate.of (2022, 11, 9), TipoDeOperacion.CONFIGURACION);
 		alarma.agregarAccion(50, alarma, administrador, LocalDate.of (2022, 11, 9), TipoDeOperacion.CONFIGURACION);

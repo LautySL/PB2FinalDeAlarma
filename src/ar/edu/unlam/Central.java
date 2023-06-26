@@ -66,28 +66,28 @@ public class Central {
 	}
 	
 	public boolean agregarSensorAAlarma(int idAlarma, String codigoConfiguracionAlarma, Sensor sensor, int idUsuarioConfigurador) throws SensorDuplicadoException {	
-		for (Alarma alarma : alarmas) {
-			if (alarma.getIDalarma().equals(idAlarma)) {
-				if (alarma.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
-					List <Sensor> listaDeSensoresDeLaAlarma = alarma.getListaDeSensores();
+			Alarma alarma = getAlarmaPorID(idAlarma);
+			List <Sensor> listaDeSensoresDeLaAlarma = alarma.getListaDeSensores();
+	
+			if (alarma.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
+				if (listaDeSensoresDeLaAlarma.size() == 0) {
+					alarma.agregarSensor(sensor);
+					return true;
+				}	
 					for (Sensor sensor2 : listaDeSensoresDeLaAlarma) {
 						if (sensor2.getIdentificadorNumerico() != sensor.getIdentificadorNumerico()) {
 							alarma.agregarSensor(sensor);
 							return true;
 						}
 					}
-				} else if (alarma.getIDalarma().equals(idAlarma)) {
-					if (alarma.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
-						List <Sensor> listaDeSensoresDeLaAlarma = alarma.getListaDeSensores();
+				} else if (alarma.getCodigoDeConfiguracion().equals(codigoConfiguracionAlarma)) {
 						for (Sensor sensor2 : listaDeSensoresDeLaAlarma) {
 							if (sensor2.getIdentificadorNumerico().equals(sensor.getIdentificadorNumerico())) {
 								throw new SensorDuplicadoException();
-							}
 						}
 					}
 				}
-			}
-		} return false;
+		 return false;
 	}
 	
 	public boolean activarSensorDeAlarma (int idSensor, int idAlarma, String codigoActivacionAlarma) {
@@ -105,25 +105,41 @@ public class Central {
 		} return false;
 	}
 	
-	public boolean activarODesactivarAlarma (int idAlarma, String codigoActivacionAlarma) {
-		Boolean alarmaActivada = true;
+	private Alarma getAlarmaPorID (int idAlarma) {
+		Alarma alarmaBuscada = null;
 		for (Alarma alarma : alarmas) {
-			if (alarma.getIDalarma() == idAlarma) {
-				if (alarma.getCodigoDeActivacionDesactivacion().equals(codigoActivacionAlarma)) {
-					if (alarma.verificarSiTodosLosSensoresDeUnaAlarmaEstanActivados() && alarma.getEstaActivada() == false) {
-						alarma.setEstaActivada(true);
-						alarmaActivada = true;
-					} else if (alarma.getEstaActivada() == true) {
-						alarma.setEstaActivada(false);
-						alarmaActivada = false;
-					}
+			if (alarma.getIDalarma().equals(idAlarma)) {
+				alarmaBuscada = alarma;
+				return alarmaBuscada;
+			}
+		} return null;
+	}
+	
+	public Boolean activarAlarma (int idAlarma, String codigoActivacionAlarma) {
+		Alarma alarma = getAlarmaPorID(idAlarma);
+		if (alarma.getCodigoDeActivacionDesactivacion().equals(codigoActivacionAlarma)) {
+			if (alarma.verificarSiTodosLosSensoresDeUnaAlarmaEstanActivados()) {
+				if (alarma.getEstaActivada() == false) {
+					alarma.setEstaActivada(true);
+					return true;
 				}
 			}
-		} return alarmaActivada;
+		}
+		return false;
+	}
+	
+	public void desactivarAlarma (int idAlarma) {
+		Alarma alarma = getAlarmaPorID(idAlarma);
+		if (alarma.getEstaActivada() == true) {
+			alarma.setEstaActivada(false);
+		}
 	}
 
-	public boolean agregarUsuarioALaListaDeUsuariosValidosDeUnaAlarma(Integer dni, Integer iDalarma, String codigoDeConfiguracionDeLaAlarma) {
-		Boolean fueAgregadoElUsuario = false;
+	public boolean agregarUsuarioALaListaDeUsuariosValidosDeUnaAlarma(Usuario usuario, Integer iDAlarma, String codigoDeConfiguracionDeLaAlarma) {
+		Alarma alarmaALaQueLeAgregoElUsuario = getAlarmaPorID(iDAlarma);
+		if (alarmaALaQueLeAgregoElUsuario.agregarUsuarioValidoParaOperar(usuario)) {
+			return true;
+		}
 		return false;
 	}
 	

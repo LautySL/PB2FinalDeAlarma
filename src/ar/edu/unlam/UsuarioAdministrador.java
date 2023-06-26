@@ -22,12 +22,16 @@ public class UsuarioAdministrador extends Usuario {
 		return central.activarSensorDeAlarma(idSensor, idAlarma, codigoActivacionAlarma);
 	}
 	
-	public boolean activarODesactivarAlarma (int idAlarma, String codigoActivacionAlarma, Central central) {
-		return central.activarODesactivarAlarma(idAlarma, codigoActivacionAlarma);
+	public boolean activarAlarma (int idAlarma, String codigoDeConfiguracionDeLaAlarma, Central central) {
+		return central.activarAlarma(idAlarma, codigoDeConfiguracionDeLaAlarma);
+	}
+	
+	public void desactivarAlarma (int idAlarma, Central central) {
+		central.desactivarAlarma(idAlarma);
 	}
 
-	public boolean agregarUnUsuarioALaListaDeUsuariosValidos (Central central, Integer dni, Integer iDalarma, String codigoDeConfiguracionDeLaAlarma) {
-		return central.agregarUsuarioALaListaDeUsuariosValidosDeUnaAlarma(dni, iDalarma, codigoDeConfiguracionDeLaAlarma);
+	public boolean agregarUnUsuarioALaListaDeUsuariosValidos (Central central, Usuario usuario, Integer iDalarma, String codigoDeConfiguracionDeLaAlarma) {
+		return central.agregarUsuarioALaListaDeUsuariosValidosDeUnaAlarma(usuario, iDalarma, codigoDeConfiguracionDeLaAlarma);
 		
 	}
 
